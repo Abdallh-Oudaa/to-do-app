@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task{
   static String collectionName="tasks";
   String? id;
@@ -5,7 +7,7 @@ class Task{
   String? description;
   DateTime? dateTime;
   bool? isDone;
-  Task({this.id,this.isDone,required this.title,required this.description,required this.dateTime});
+  Task({this.id,this.isDone=false,required this.title,required this.description,required this.dateTime});
   Task.fromFireStore(Map<String,dynamic> data){
     id=data['id'];
     title=data['title'];
@@ -18,7 +20,7 @@ class Task{
       "id":id,
       "title":title,
       "description":description,
-      "dateTime":dateTime?.microsecondsSinceEpoch,
+      "dateTime":dateTime?.millisecondsSinceEpoch,
       "isDone":isDone,
 
 

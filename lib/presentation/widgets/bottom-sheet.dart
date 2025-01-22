@@ -1,10 +1,14 @@
+import 'package:app_to_do/business-logic/tasks_provider.dart';
 import 'package:app_to_do/business-logic/user-provider.dart';
-import 'package:app_to_do/data/firebase/task-dao.dart';
+
 import 'package:app_to_do/presentation/widgets/dialog-utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import 'calender.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   const BottomSheetWidget({super.key});
@@ -24,6 +28,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        color: Theme.of(context).colorScheme.secondary,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
         child: Form(
           key: formKey,
@@ -132,30 +137,25 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
     if (formKey.currentState?.validate() == true) {
       backDateTime ??= DateTime.now();
       var userProvider = Provider.of<UserProvider>(context, listen: false);
+      var tasksProvider = Provider.of<TasksProvider>(context, listen: false);
+
       DialogUtils.showLoading(context: context, message: "loading");
 
-      await userProvider.addTaskToFireStore(userProvider.userAuth?.uid ?? "",
-          title.text, description.text, backDateTime!).then((value) {
+      await tasksProvider
+          .addTaskToFireStore(userProvider.userAuth?.uid ?? "", title.text,
+              description.text, backDateTime!)
+          .then(
+        (value) async {
+          await tasksProvider.getTasksFromFireStore(userProvider.userAuth!.uid);
+          if (!mounted) return;
 
-        if (!mounted) return;
-        userProvider.getTasksFromFireStore(userProvider.userAuth!.uid);
+          DialogUtils.hideDialog(context: context);
 
-        DialogUtils.hideDialog(context: context);
+          Navigator.pop(context);
 
-        Navigator.pop(context);
-
-        flutterToast();
-       /* print("user from fire auth ========================>");
-        print(userProvider.userAuth?.uid);
-        print(userProvider.userAuth?.email);
-        print(userProvider.userFireBase?.email);
-        print("user from fire base ========================>");
-        print(userProvider.userFireBase?.id);
-        print(userProvider.userFireBase?.firstName);
-        print(userProvider.userFireBase?.email);*/
-          },);
-
-
+          flutterToast();
+        },
+      );
     }
   }
 }

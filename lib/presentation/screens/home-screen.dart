@@ -25,8 +25,8 @@ class _ToDoHomeScreenState extends State<ToDoHomeScreen> {
     var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "To Do List",
+        title: Text(clickIndex==0?
+          "To Do List":"Settings",
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         leading: InkWell(
@@ -47,7 +47,7 @@ class _ToDoHomeScreenState extends State<ToDoHomeScreen> {
 
 
           },
-          child: const Icon(Icons.logout,color: Colors.white,),
+          child:  Icon(Icons.logout,color: Theme.of(context).colorScheme.secondary,),
         ),
       ),
       bottomNavigationBar: BottomAppBar(

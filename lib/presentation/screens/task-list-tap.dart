@@ -1,3 +1,4 @@
+import 'package:app_to_do/business-logic/tasks_provider.dart';
 import 'package:app_to_do/business-logic/user-provider.dart';
 import 'package:app_to_do/data/firebase/task-dao.dart';
 import 'package:app_to_do/presentation/widgets/calender.dart';
@@ -12,9 +13,11 @@ class TaskListTap extends StatelessWidget {
   List<Task> tasks = [];
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserProvider>(context);
 
-    tasks = userProvider.tasks;
+    var tasksProvider = Provider.of<TasksProvider>(context);
+
+
+    tasks = tasksProvider.tasks;
 
     return Scaffold(
       body: Column(

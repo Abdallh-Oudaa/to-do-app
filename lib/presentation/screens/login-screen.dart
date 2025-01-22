@@ -1,9 +1,11 @@
+import 'package:app_to_do/business-logic/tasks_provider.dart';
 import 'package:app_to_do/business-logic/user-provider.dart';
 import 'package:app_to_do/core/const-string.dart';
 import 'package:app_to_do/email-regex.dart';
 import 'package:app_to_do/presentation/screens/home-screen.dart';
 
 import 'package:app_to_do/presentation/screens/register-screen.dart';
+import 'package:app_to_do/presentation/widgets/calender.dart';
 import 'package:app_to_do/presentation/widgets/dialog-utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -119,12 +121,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login() async {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
+    var taskProvider = Provider.of<TasksProvider>(context, listen: false);
     if (formKey.currentState?.validate() == true) {
       try {
+
         DialogUtils.showLoading(context: context, message: "loading");
         await userProvider.login(email.text, password.text);
        await userProvider.getUserFromFireStore(userProvider.userAuth?.uid??"");
-       await userProvider.getTasksFromFireStore(userProvider.userAuth!.uid);
+       await taskProvider.getTasksFromFireStore(userProvider.userAuth!.uid);
 
         if(!mounted)return;
         DialogUtils.hideDialog(context: context);
