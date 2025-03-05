@@ -1,16 +1,7 @@
-# app_to_do
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+this is ToDoApp 
+you can add tasks 
+delete tasks
+updae tasks
+and you can change the theme of this app
+i used firebase to storge those tasks by cloud firestore 
+i used firebase auth for login and registration
